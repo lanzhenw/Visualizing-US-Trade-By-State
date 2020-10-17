@@ -35,74 +35,78 @@ function selectState (d) {
 }
 
 // Build U.S. Map
-d3.csv('./data/csv/allState2018.csv', function (error, data) {
-  if (error) { console.log('error', error) }
-  // console.log('data', data)
-  mapColor.domain([
-    d3.min(data, function (d) { return d.total_trade_activity }),
-    d3.max(data, function (d) { return d.total_trade_activity })
-  ])
+d3.csv('./data/csv/allState2018.csv')
+  .then( data => {
+    mapColor.domain([
+      d3.min(data, function (d) { return d.total_trade_activity }),
+      d3.max(data, function (d) { return d.total_trade_activity })
+    ])
+      // load GeoJSON data and merge with allstate2018 data
+    d3.json('./data/json/us-states.json')
+      .then(json => {
+        for (var i = 0; i < data.length; i++) {
+          // grab te state name and total trade activity value in billions
+          var dataState = data[i].state
+          var dataValue = data[i].total_trade_activity
 
-  // load GeoJSON data and merge with allstate2018 data
-  d3.json('./data/json/us-states.json', function (error, json) {
-    if (error) { console.log('error', error) }
-    // console.log('usjson', json)
-    for (var i = 0; i < data.length; i++) {
-      // grab te state name and total trade activity value in billions
-      var dataState = data[i].state
-      var dataValue = data[i].total_trade_activity
-
-      // Find the corresponding state inside the GeoJSON
-      for (var j = 0; j < json.features.length; j++) {
-        var jsonState = json.features[j].properties.name
-        if (dataState == jsonState) {
-          // copy the data value into the json
-          json.features[j].properties.value = dataValue
-          // stop looking through the json
-          break
+          // Find the corresponding state inside the GeoJSON
+          for (var j = 0; j < json.features.length; j++) {
+            var jsonState = json.features[j].properties.name
+            if (dataState == jsonState) {
+              // copy the data value into the json
+              json.features[j].properties.value = dataValue
+              // stop looking through the json
+              break
+            }
+          }
         }
-      }
-    }
 
-    // Bind the data to the SVG and create one path per GeoJSON feature
-    svg.selectAll('path')
-      .data(json.features)
-      .enter()
-      .append('path')
-      .attr('d', path)
-      .style('stroke', 'grey')
-      .style('fill', function (d) {
-        let value = d.properties.value
-        if (value) {
-          return mapColor(value)
-        } else {
-          return 'grey'
-        }
-      })
-      .on('click', function (d) {
-        // Find previously selected, unselect
-        d3.select(".selected").classed("selected", false);
-        // Select current item
-        d3.select(this).classed("selected", true);
+        // Bind the data to the SVG and create one path per GeoJSON feature
+        svg.selectAll('path')
+          .data(json.features)
+          .enter()
+          .append('path')
+          .attr('d', path)
+          .style('stroke', 'grey')
+          .style('fill', function (d) {
+            let value = d.properties.value
+            if (value) {
+              return mapColor(value)
+            } else {
+              return 'grey'
+            }
+          })
+          .on('click', function (d) {
+            // Find previously selected, unselect
+            d3.select(".selected").classed("selected", false);
+            // Select current item
+            d3.select(this).classed("selected", true);
 
-        // Update bar and pack layout charts
-        selectState(d)
-        updateExportGraph()
-        updateImportGraph()
-        updateExportPack()
-        updateImportPack()
-        updateShowState()
+            // Update bar and pack layout charts
+            selectState(d)
+            updateExportGraph()
+            updateImportGraph()
+            updateExportPack()
+            updateImportPack()
+            updateShowState()
+          })
+          // .on('mouseover', function (d) {
+          //   selectState(d)
+          //   updateExportGraph()
+          //   updateImportGraph()
+          //   updateExportPack()
+          //   updateImportPack()
+          //   updateShowState()
+          // })
       })
-      // .on('mouseover', function (d) {
-      //   selectState(d)
-      //   updateExportGraph()
-      //   updateImportGraph()
-      //   updateExportPack()
-      //   updateImportPack()
-      //   updateShowState()
-      // })
-  })
-})
+      .catch(err => console.log('error', err))
+
+    })
+  .catch(error =>console.log('error', error)) 
+  
+
+
+
 
 // Build map legend
 function buildMapLegend () {
