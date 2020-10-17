@@ -30,9 +30,11 @@ var mapColor = d3.scaleQuantize()
 var selectedState
 // var selectedTime
 function selectState (d) {
+  console.info("d", d)
   selectedState = d.properties.name
   // return d.properties.name
 }
+
 
 // Build U.S. Map
 d3.csv('./data/csv/allState2018.csv')
@@ -76,7 +78,7 @@ d3.csv('./data/csv/allState2018.csv')
               return 'grey'
             }
           })
-          .on('click', function (d) {
+          .on('click', function (ev, d) {
             // Find previously selected, unselect
             d3.select(".selected").classed("selected", false);
             // Select current item
@@ -84,6 +86,7 @@ d3.csv('./data/csv/allState2018.csv')
 
             // Update bar and pack layout charts
             selectState(d)
+            console.log("selectedState is ", selectedState)
             updateExportGraph()
             updateImportGraph()
             updateExportPack()
@@ -104,9 +107,6 @@ d3.csv('./data/csv/allState2018.csv')
     })
   .catch(error =>console.log('error', error)) 
   
-
-
-
 
 // Build map legend
 function buildMapLegend () {

@@ -10,37 +10,25 @@ const importColors = [
 ]
 
 function renderImportGraph () {
-  d3.csv('./data/csv/ImportsByCountry.csv', numConverter, importGraph)
+  d3.csv('./data/csv/ImportsByCountry.csv')
+    .then(d => {
+      const data = numConverter(d)
+      importGraph(data)
+    })
+    .catch(err => console.warn(err))
+}
 
-  function numConverter (d) {
-    d.Imports = parseFloat(d.Imports.replace(/,/g, ''))
-    d.Time = +d.Time
-    return d
-  }
+function numConverter (d) {
+  d.Imports = parseFloat(d.Imports.replace(/,/g, ''))
+  d.Time = +d.Time
+  return d
 }
 
 renderImportGraph()
 
-function importGraph (error, data) {
+function importGraph (data) {
   // Filter dataset
-  if (error) {
-    console.log('Error occurred while loading data:', error)
-  } else {
-    let statesData = []
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].State === 'Texas' && data[i].Time === 2018 && data[i].Country != 'World Total') {
-        statesData.push(data[i])
-      }
-    }
-
-    statesData.sort(function (a, b) {
-      return b.Imports - a.Imports
-    })
-
-    importBarChartData = statesData.slice(0, 10)
-  }
-
-  console.log(importBarChartData, importBarChartData.length)
+  filterImportData(data)
 
   // Build Import Bar Chart Graph
   const w = 550
@@ -88,25 +76,40 @@ function importGraph (error, data) {
       barTooltip.html(tip)
         .style('left', (d3.event.pageX) + 'px')
         .style('top', (d3.event.pageY - 28) + 'px')
-    })
-    .on('mouseout', function (d) {
-      barTooltip.transition()
-        .duration(500)
-        .style('opacity', 0)
-    })
+      })
+      .on('mouseout', function (d) {
+        barTooltip.transition()
+          .duration(500)
+          .style('opacity', 0)
+      })
 
   svg.selectAll('text')
-    .data(importBarChartData)
-    .enter()
-    .append('text')
-    .text(function (d, i) {
-      return importBarChartData[i].Country
+      .data(importBarChartData)
+      .enter()
+      .append('text')
+      .text(function (d, i) {
+        return importBarChartData[i].Country
+      })
+      .attr('text-anchor', 'left')
+      .attr('y', (d, i) => 18 + i * (h / importBarChartData.length))
+      .attr('x', padding + 5)
+      .attr('fill', 'white')
+      .attr('class', 'chart-label')
+}
+
+const filterImportData = data => {
+  let statesData = []
+    
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].State === 'Texas' && data[i].Time === '2018' && data[i].Country != 'World Total') {
+        statesData.push(data[i])
+      }
+    }
+    statesData.sort((a, b) => {
+      return a.Imports - b.Imports
     })
-    .attr('text-anchor', 'left')
-    .attr('y', (d, i) => 18 + i * (h / importBarChartData.length))
-    .attr('x', padding + 5)
-    .attr('fill', 'white')
-    .attr('class', 'chart-label')
+  importBarChartData = statesData.slice(0, 10)
+  console.log(importBarChartData, importBarChartData.length)
 }
 
 // Update Import Bar Chart
@@ -120,19 +123,17 @@ function updateImportGraph () {
   }
 }
 
-function updatedImportGraph (error, data) {
+function updatedImportGraph (data) {
   var filters = {
     state: selectedState || 'Texas',
     time: selectedTime || '2018'
   }
 
   // Filter dataset
-  if (error) {
-    console.log('Error occurred while loading data:', error)
-  } else {
+
     let statesData = []
     for (let i = 0; i < data.length; i++) {
-      if (data[i].State === filters.state && data[i].Time === filters.time && data[i].Country != 'World Total') {
+      if (data[i].State === filters.state && data[i].Time == filters.time && data[i].Country != 'World Total') {
         statesData.push(data[i])
       }
     }
@@ -142,7 +143,7 @@ function updatedImportGraph (error, data) {
     })
 
     importBarChartData = statesData.slice(0, 10)
-  }
+  
 
   // console.log(importBarChartData, importBarChartData.length)
 

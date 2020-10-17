@@ -10,22 +10,25 @@ const exportColors = [
 ]
 
 function renderExportGraph () {
-  d3.csv('./data/csv/ExportByCountry.csv', numConverter, exportGraph)
+  d3.csv('./data/csv/ExportByCountry.csv')
+    .then(d=>{
+      const data = numConverter(d)
+      exportGraph(data)
+    })
+    .catch(err => console.warn("error occured when loading data", err))
+}
 
-  function numConverter (d) {
-    d.Exports = parseFloat(d.Exports.replace(/,/g, ''))
-    d.Time = +d.Time
-    return d
-  }
+function numConverter (d) {
+  d.Exports = parseFloat(d.Exports.replace(/,/g, ''))
+  d.Time = +d.Time
+  return d
 }
 
 renderExportGraph()
 
-function exportGraph (error, data) {
+function exportGraph (data) {
   // Filter dataset
-  if (error) {
-    console.log('Error occurred while loading data:', error)
-  } else {
+
     let statesData = []
     for (let i = 0; i < data.length; i++) {
       if (data[i].State === 'Texas' && data[i].Time === 2018 && data[i].Country != 'World Total') {
@@ -36,9 +39,8 @@ function exportGraph (error, data) {
     statesData.sort(function (a, b) {
       return b.Exports - a.Exports
     })
-
     exportBarChartData = statesData.slice(0, 10)
-  }
+  
 
   console.log(exportBarChartData, exportBarChartData.length)
 
@@ -107,6 +109,7 @@ function exportGraph (error, data) {
     .attr('x', padding + 5)
     .attr('fill', 'white')
     .attr('class', 'chart-label')
+
 }
 
 // Update Export Bar Chart
@@ -120,16 +123,13 @@ function updateExportGraph () {
   }
 }
 
-function updatedExportGraph (error, data) {
+function updatedExportGraph (data) {
   var filters = {
     state: selectedState || 'Texas',
     time: selectedTime || '2018'
   }
 
   // Filter dataset
-  if (error) {
-    console.log('Error occurred while loading data:', error)
-  } else {
     let statesData = []
     for (let i = 0; i < data.length; i++) {
       if (data[i].State === filters.state && data[i].Time === filters.time && data[i].Country != 'World Total') {
@@ -142,7 +142,7 @@ function updatedExportGraph (error, data) {
     })
 
     exportBarChartData = statesData.slice(0, 10)
-  }
+  
 
   // console.log(exportBarChartData, exportBarChartData.length)
 
