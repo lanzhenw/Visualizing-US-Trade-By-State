@@ -1,5 +1,6 @@
 var tradeVolumeDataset
 var stateNames
+import * as d3 from "d3"
 
 d3.csv('./data/csv/allState2018.csv', numConverter, function (error, csvdata) {
   
