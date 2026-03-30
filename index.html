@@ -13,13 +13,8 @@
     <!-- add style sheets -->
     <link href="https://fonts.googleapis.com/css?family=Economica|Lato|Orbitron:400,700|Share+Tech+Mono" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.js" integrity="sha256-kX9/pjvgpDgSmoSfzAlYJeICaZXca16iu+c3F6ueKRo=" crossorigin="anonymous"></script>
-    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src='./lib/d3.js'></script>
-
 </head>
 <body>
-    <!-- <div class="box" id="title"> -->
     <div id="title" style="display: flex;flex-direction:row;align-content: space-between">
         <div style="float:left; flex:4">
             <div style="float:left;margin:3px">
@@ -32,7 +27,7 @@
                 <g></g>
             </svg>
         </div>
-        
+
     </div>
     <div class="box" id="content">
 
@@ -41,19 +36,19 @@
                     <div class="box" id="bar"></div>
                     <div class="box" id="map">
                         <div class="box" id="maptitle">
-                            <text class="maptitle chartTitle">Total Trade Volume in 2018</text>
-    
+                            <text class="maptitle chartTitle">Total Trade Volume in 2025</text>
+
                         </div>
                        <div class="box" id="themap">
                        </div>
-                       
+
                     </div>
                 </div>
                 <div class="box" id="barPanel">
                     <div id="exportBarChart">
                         <h2 class="chartTitle" style="text-align:center; z-index:7;  padding-left:15px; padding-bottom:3px;margin:0;font-size:25px; ">Top Trade Partners: <strong>Exports </strong></h2>
-                    </div>        
-                            
+                    </div>
+
                     <div id="importBarChart">
                         <h2 class="chartTitle" style="text-align:center; z-index:7;  padding-left:15px; padding-bottom:3px;margin:0; font-size:25px;">Top Trade Partners: <strong>Imports </strong></h2>
                     </div>
@@ -64,13 +59,13 @@
                     <div class="box" id="layoutchart-info">
                             <div class="slidecontainer">
                                     <div style="margin-top:0;margin-bottom:0;color:lavender;display:flex;flex-direction: row;justify-content: space-between">
-                                        <span>2014</span>
-                                        <span>2015</span>
                                         <span>2016</span>
-                                        <span>2017</span>
                                         <span>2018</span>
+                                        <span>2020</span>
+                                        <span>2022</span>
+                                        <span>2024</span>
                                     </div>
-                                    <input type="range" min="1" max="100" value="100" class="slider" id="myRange">
+                                    <input type="range" min="2016" max="2025" value="2025" step="1" class="slider" id="myRange">
                             </div>
                     </div>
                     <div class="box" id="packLayout-export">
@@ -79,27 +74,17 @@
                                 <g></g>
                             </svg>
                     </div>
-                    
+
                     <div class="box" id="packLayout-import">
-                            <p class="chartTitle" style="text-align:left; z-index:7; color:lavender; padding-left:15px; margin:0; x">State Import Values by Commodity Category</p>
+                            <p class="chartTitle" style="text-align:left; z-index:7; color:lavender; padding-left:15px; margin:0; ">State Import Values by Commodity Category</p>
                             <svg width="480" height="410">
                                 <g></g>
                             </svg>
                     </div>
-            </div> 
+            </div>
     </div>
 
-
-<script src="https://d3js.org/topojson.v2.js"></script>
-<script src='./src/yearSelection.js'></script>
-<script src="./src/usa.js"></script>
-<script src="./src/show-state.js"></script>
-<script src="./src/country-export.js"></script>
-<script src="./src/country-import.js"></script>
-<!-- <script src="./src/show-state.js"></script> -->
-<script src="./src/packlayout_export.js"></script>
-<script src="./src/packlayout_import.js"></script>
-<script src="./src/barChart_tradevolume.js"></script>
+<script type="module" src="/src/main.js"></script>
 
 </body>
 </html>

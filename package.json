@@ -1,14 +1,17 @@
 {
-  "name": "d3_exercise",
-  "version": "1.0.0",
-  "description": "to learn d3",
-  "main": "index.js",
+  "name": "us-trade-dashboard",
+  "version": "2.0.0",
+  "description": "U.S. International Trade and Commerce Dashboard",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite --port 5173",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "d3": "^5.9.2"
+    "d3": "^7"
+  },
+  "devDependencies": {
+    "vite": "^6"
   }
 }
