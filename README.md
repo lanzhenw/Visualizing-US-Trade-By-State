@@ -13,6 +13,8 @@ This project features a web-based data dashboard visualizing trade data by state
 
 Our web application provides an interactive view of the trade activity each state is engaged in, aimed at giving insight into what commodities states are trading as well as who their top trade partners are. We looked at these statistics across a 5 year period from 2014 - 2018.
 
+Updated in 2026.
+
 ## About Us
 
 Our team includes the following members:
