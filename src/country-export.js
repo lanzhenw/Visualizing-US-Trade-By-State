@@ -1,42 +1,48 @@
 import * as d3 from 'd3';
 import { state } from './state.js';
 
+// Internal coordinate space — SVG uses viewBox so it scales to any container size.
+const W = 550;
+const H = 280;
+const PAD = 30;
+
 let exportBarChartData;
 let allData;
 let barTooltip;
+let svg;
 
 export function initExportGraph(data) {
   allData = data;
-
-  // Filter for default state/year
-  filterData('Texas', '2018');
-
-  const w = 550;
-  const h = 280;
-  const padding = 30;
+  filterData(state.selectedState || 'Texas', state.selectedTime || '2025');
 
   barTooltip = d3.select('#exportBarChart')
     .append('div')
     .attr('class', 'tooltip')
     .style('opacity', 0);
 
+  svg = d3.select('#exportBarChart')
+    .append('svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .attr('class', 'exportsChart');
+
+  renderBars();
+}
+
+function renderBars() {
   const xScale = d3.scaleLinear()
     .domain([0, d3.max(exportBarChartData, d => d.Exports)])
-    .range([padding, w]);
+    .range([PAD, W]);
 
-  const svg = d3.select('#exportBarChart')
-    .append('svg')
-    .attr('width', w)
-    .attr('height', h)
-    .attr('class', 'exportsChart');
+  const rowH = H / exportBarChartData.length;
 
   svg.selectAll('rect')
     .data(exportBarChartData)
     .enter()
     .append('rect')
-    .attr('x', padding)
-    .attr('y', (d, i) => i * (h / exportBarChartData.length))
-    .attr('height', () => (h / exportBarChartData.length) - 5)
+    .attr('x', PAD)
+    .attr('y', (d, i) => i * rowH)
+    .attr('height', rowH - 5)
     .attr('width', d => xScale(d.Exports))
     .attr('fill', '#C85FE5')
     .attr('class', 'chartBar')
@@ -57,9 +63,9 @@ export function initExportGraph(data) {
     .enter()
     .append('text')
     .text((d, i) => exportBarChartData[i].Country)
-    .attr('text-anchor', 'left')
-    .attr('y', (d, i) => 18 + i * (h / exportBarChartData.length))
-    .attr('x', padding + 5)
+    .attr('text-anchor', 'start')
+    .attr('y', (d, i) => 18 + i * rowH)
+    .attr('x', PAD + 5)
     .attr('fill', 'white')
     .attr('class', 'chart-label');
 }
@@ -76,27 +82,35 @@ function filterData(stateName, time) {
 }
 
 export function updateExportGraph() {
-  filterData(state.selectedState || 'Texas', state.selectedTime || '2018');
-
-  const w = 550;
-  const h = 280;
-  const padding = 30;
+  filterData(state.selectedState || 'Texas', state.selectedTime || '2025');
 
   const xScale = d3.scaleLinear()
     .domain([0, d3.max(exportBarChartData, d => d.Exports)])
-    .range([padding, w]);
+    .range([PAD, W]);
 
-  const svg = d3.select('#exportBarChart');
+  const rowH = H / exportBarChartData.length;
 
   svg.selectAll('rect')
     .data(exportBarChartData)
     .transition().duration(1000)
-    .attr('x', padding)
-    .attr('y', (d, i) => i * (h / exportBarChartData.length))
-    .attr('height', () => (h / exportBarChartData.length) - 5)
+    .attr('x', PAD)
+    .attr('y', (d, i) => i * rowH)
+    .attr('height', rowH - 5)
     .attr('width', d => xScale(d.Exports))
     .attr('fill', '#C85FE5')
     .attr('class', 'chartBar');
+
+  // Rebind data for tooltip closure to see new values
+  svg.selectAll('rect')
+    .data(exportBarChartData)
+    .on('mouseover', function (event, d) {
+      barTooltip.transition().duration(500).style('opacity', 0.9);
+      const format = d3.format(',');
+      const tip = '<strong>Total Exports to ' + d.Country + ':</strong> $' + format(d.Exports);
+      barTooltip.html(tip)
+        .style('left', event.pageX + 'px')
+        .style('top', (event.pageY - 28) + 'px');
+    });
 
   svg.selectAll('text')
     .data(exportBarChartData)
@@ -104,9 +118,9 @@ export function updateExportGraph() {
     .delay((d, i) => i * 50)
     .duration(2000)
     .text((d, i) => exportBarChartData[i].Country)
-    .attr('text-anchor', 'left')
-    .attr('y', (d, i) => 18 + i * (h / exportBarChartData.length))
-    .attr('x', padding + 5)
+    .attr('text-anchor', 'start')
+    .attr('y', (d, i) => 18 + i * rowH)
+    .attr('x', PAD + 5)
     .attr('fill', 'white')
     .attr('class', 'chart-label');
 }

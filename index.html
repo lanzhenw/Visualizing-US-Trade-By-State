@@ -5,84 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>U.S. Trade & Commerce</title>
-    <!-- add favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="./favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon_io/favicon-16x16.png">
     <link rel="manifest" href="./favicon_io/site.webmanifest">
-    <!-- add style sheets -->
     <link href="https://fonts.googleapis.com/css?family=Economica|Lato|Orbitron:400,700|Share+Tech+Mono" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-    <div id="title" style="display: flex;flex-direction:row;align-content: space-between">
-        <div style="float:left; flex:4">
-            <div style="float:left;margin:3px">
-                <img style="object-fit:scale-down; width:50px; height:65px" src="./favicon_io/android-chrome-192x192.png"/>
-            </div>
-            <h1 style="padding-left:80px;margin-top:0px; padding-top:15px; font-family: 'Share Tech Mono', monospace; font-style:bold"> U.S. International Trade and Commerce By State</h1>
-        </div>
-        <div style="float:right; flex:1.3; justify-content: right">
-            <svg id='show-state' style="height:43px; width: 620px; padding-left:20px; margin-top:0px; padding-top:18px;background-image:linear-gradient(-90deg, rgb(22,22,22,0),rgba(77, 48, 139,0.8),rgb(22,22,22,0));  ">
-                <g></g>
-            </svg>
-        </div>
+    <nav class="tab-bar">
+        <button class="tab active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="china-mexico">China &rarr; Mexico Substitution</button>
+        <button class="tab" data-tab="heatmap">Commodity Growth Heatmap</button>
+    </nav>
 
-    </div>
-    <div class="box" id="content">
-
+    <section id="tab-dashboard" class="tab-panel active">
+        <div id="title">
+            <img style="width:50px; height:65px; object-fit:scale-down" src="./favicon_io/android-chrome-192x192.png" alt=""/>
+            <h1>U.S. International Trade and Commerce By State</h1>
+            <svg id="show-state"><g></g></svg>
+        </div>
+        <div class="box" id="content">
             <div class="box" id="left">
                 <div class="box" id="mapPanel">
                     <div class="box" id="bar"></div>
                     <div class="box" id="map">
                         <div class="box" id="maptitle">
                             <text class="maptitle chartTitle">Total Trade Volume in 2025</text>
-
                         </div>
-                       <div class="box" id="themap">
-                       </div>
-
+                        <div class="box" id="themap"></div>
                     </div>
                 </div>
                 <div class="box" id="barPanel">
                     <div id="exportBarChart">
-                        <h2 class="chartTitle" style="text-align:center; z-index:7;  padding-left:15px; padding-bottom:3px;margin:0;font-size:25px; ">Top Trade Partners: <strong>Exports </strong></h2>
+                        <h2 class="chartTitle" style="text-align:center; padding-left:15px;">Top Trade Partners: <strong>Exports</strong></h2>
                     </div>
-
                     <div id="importBarChart">
-                        <h2 class="chartTitle" style="text-align:center; z-index:7;  padding-left:15px; padding-bottom:3px;margin:0; font-size:25px;">Top Trade Partners: <strong>Imports </strong></h2>
+                        <h2 class="chartTitle" style="text-align:center; padding-left:15px;">Top Trade Partners: <strong>Imports</strong></h2>
                     </div>
                 </div>
             </div>
 
             <div class="box" id="right">
-                    <div class="box" id="layoutchart-info">
-                            <div class="slidecontainer">
-                                    <div style="margin-top:0;margin-bottom:0;color:lavender;display:flex;flex-direction: row;justify-content: space-between">
-                                        <span>2016</span>
-                                        <span>2018</span>
-                                        <span>2020</span>
-                                        <span>2022</span>
-                                        <span>2024</span>
-                                    </div>
-                                    <input type="range" min="2016" max="2025" value="2025" step="1" class="slider" id="myRange">
-                            </div>
+                <div class="box" id="layoutchart-info">
+                    <div class="slidecontainer">
+                        <div style="margin-top:0;margin-bottom:0;color:lavender;display:flex;flex-direction: row;justify-content: space-between">
+                            <span>2016</span>
+                            <span>2018</span>
+                            <span>2020</span>
+                            <span>2022</span>
+                            <span>2024</span>
+                        </div>
+                        <input type="range" min="2016" max="2025" value="2025" step="1" class="slider" id="myRange">
                     </div>
-                    <div class="box" id="packLayout-export">
-                            <p class="chartTitle" style="text-align:left; z-index:7; color:lavender; padding-left:15px; margin:0; ">State Export Values by Commodity Category</p>
-                            <svg width="520" height="410">
-                                <g></g>
-                            </svg>
-                    </div>
-
-                    <div class="box" id="packLayout-import">
-                            <p class="chartTitle" style="text-align:left; z-index:7; color:lavender; padding-left:15px; margin:0; ">State Import Values by Commodity Category</p>
-                            <svg width="480" height="410">
-                                <g></g>
-                            </svg>
-                    </div>
+                </div>
+                <div class="box" id="packLayout-export">
+                    <p class="chartTitle" style="text-align:left; color:lavender; padding-left:15px; margin:0;">State Export Values by Commodity Category</p>
+                    <svg><g></g></svg>
+                </div>
+                <div class="box" id="packLayout-import">
+                    <p class="chartTitle" style="text-align:left; color:lavender; padding-left:15px; margin:0;">State Import Values by Commodity Category</p>
+                    <svg><g></g></svg>
+                </div>
             </div>
-    </div>
+        </div>
+
+        <section id="insights-section">
+            <h2 class="section-title">What the Data Shows</h2>
+            <p class="section-subtitle">
+                Patterns surfaced from the 530 state-year records and 178,000 country-partner rows in this dashboard.
+                Filter by period to see the full 2016 &rarr; 2025 arc, or zoom into the post-pandemic window.
+            </p>
+            <div class="insights-filters">
+                <button data-period="all" class="active">All</button>
+                <button data-period="2016-2025">Macro shifts (2016&ndash;2025)</button>
+                <button data-period="2022-2025">Post-pandemic (2022&ndash;2025)</button>
+            </div>
+            <div id="insights" class="insights-grid"></div>
+        </section>
+    </section>
+
+    <section id="tab-china-mexico" class="tab-panel">
+        <div class="sub-view">
+            <h2>China &rarr; Mexico Substitution, 2016&ndash;2025</h2>
+            <p class="desc">
+                Which states traded out Chinese imports for Mexican ones? <em>Substitution score</em> = (change in Mexico imports) &minus; (change in China imports). Green states replaced China with Mexico; red states lost from both sources. Data: Census Bureau <code>statenaics</code> API.
+            </p>
+            <div class="sub-grid">
+                <div>
+                    <p class="panel-title">Substitution map (higher = Mexico gain exceeds China loss)</p>
+                    <div class="sub-map" id="sub-map"></div>
+                </div>
+                <div>
+                    <p class="panel-title">Top 15 substitution states: China loss (red) vs Mexico gain (green)</p>
+                    <div class="sub-bars" id="sub-bars"></div>
+                </div>
+            </div>
+            <div class="sub-trend-row">
+                <p class="panel-title">US-wide share of imports from China vs Mexico, 2016&ndash;2025</p>
+                <div class="sub-trend" id="sub-trend"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tab-heatmap" class="tab-panel">
+        <div class="heatmap-view">
+            <h2>State &times; Commodity Growth Heatmap</h2>
+            <div class="heatmap-controls">
+                <label>Flow:
+                    <select id="heatmap-flow">
+                        <option value="exports">Exports</option>
+                        <option value="imports">Imports</option>
+                    </select>
+                </label>
+                <label>Compare vs:
+                    <select id="heatmap-baseline">
+                        <option value="2016">2016 (full window)</option>
+                        <option value="2022">2022 (post-pandemic)</option>
+                    </select>
+                </label>
+                <label>Show:
+                    <select id="heatmap-metric">
+                        <option value="pct">% change</option>
+                        <option value="abs">Absolute $ change</option>
+                    </select>
+                </label>
+                <span class="heatmap-legend">
+                    <span>decline</span>
+                    <span class="legend-bar"></span>
+                    <span>growth</span>
+                </span>
+            </div>
+            <div class="heatmap-scroll" id="heatmap-scroll"></div>
+        </div>
+    </section>
 
 <script type="module" src="/src/main.js"></script>
 

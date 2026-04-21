@@ -3,9 +3,11 @@ import { state } from './state.js';
 
 let allData;
 const legendData = ['Total Exports', 'Total Imports'];
-const margin = { top: 50, right: 10, bottom: 0, left: 105 };
-const width = 432 - margin.right - margin.left;
-const height = 577 - margin.top - margin.bottom;
+const margin = { top: 50, right: 10, bottom: 10, left: 105 };
+const TOTAL_W = 432;
+const TOTAL_H = 577;
+const width = TOTAL_W - margin.right - margin.left;
+const height = TOTAL_H - margin.top - margin.bottom;
 const colors = ['#C85FE5', '#6B56D3'];
 
 let svg, tooltip, xScale, yScale;
@@ -20,8 +22,8 @@ export function initTradeVolume(data) {
 
   svg = d3.select('#bar')
     .append('svg')
-    .attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${TOTAL_W} ${TOTAL_H}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
     .append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -70,13 +72,12 @@ export function initTradeVolume(data) {
     .attr('class', 'import-circle')
     .attr('cx', d => xScale(d.imports + d.exports))
     .attr('cy', d => yScale(d.state))
-    .attr('r', '4')
+    .attr('r', 4)
     .style('fill', colors[1])
     .attr('stroke', colors[1])
     .on('mouseover', function (event, d) {
       tooltip.transition().duration(500).style('opacity', 0.9);
-      const tip = 'Total ' + d.state + ' Imports: $' + d.imports + ' B';
-      tooltip.html(tip)
+      tooltip.html('Total ' + d.state + ' Imports: $' + d.imports + ' B')
         .style('left', event.pageX + 'px')
         .style('top', (event.pageY - 28) + 'px');
     })
@@ -92,13 +93,12 @@ export function initTradeVolume(data) {
     .attr('class', 'export-circle')
     .attr('cx', d => xScale(d.exports))
     .attr('cy', d => yScale(d.state))
-    .attr('r', '4')
+    .attr('r', 4)
     .style('fill', colors[0])
     .attr('stroke', colors[0])
     .on('mouseover', function (event, d) {
       tooltip.transition().duration(500).style('opacity', 0.9);
-      const tip = 'Total ' + d.state + ' Exports: $' + d.exports + ' B';
-      tooltip.html(tip)
+      tooltip.html('Total ' + d.state + ' Exports: $' + d.exports + ' B')
         .style('left', event.pageX + 'px')
         .style('top', (event.pageY - 28) + 'px');
     })
@@ -113,11 +113,11 @@ export function initTradeVolume(data) {
     .append('circle')
     .attr('cx', width - 150)
     .attr('cy', (d, i) => height - 50 + (i * 25))
-    .attr('r', '10')
+    .attr('r', 10)
     .style('fill', (d, i) => colors[i])
     .attr('class', 'legend');
 
-  svg.selectAll('textLabels')
+  svg.selectAll('.textLabels')
     .data(legendData)
     .enter()
     .append('text')
@@ -129,10 +129,8 @@ export function initTradeVolume(data) {
 
 export function updateTradeVolume() {
   const yearData = getYearData();
-
   xScale.domain([0, d3.max(yearData, d => d.total_trade_activity) * 1.05]);
 
-  // Update lines
   svg.selectAll('.trade-line')
     .data(yearData)
     .transition().duration(500)
@@ -140,38 +138,32 @@ export function updateTradeVolume() {
     .attr('y1', d => yScale(d.state))
     .attr('y2', d => yScale(d.state));
 
-  // Update import circles
   svg.selectAll('.import-circle')
     .data(yearData)
     .transition().duration(500)
     .attr('cx', d => xScale(d.imports + d.exports))
     .attr('cy', d => yScale(d.state));
 
-  // Rebind mouseover with updated data
   svg.selectAll('.import-circle')
     .data(yearData)
     .on('mouseover', function (event, d) {
       tooltip.transition().duration(500).style('opacity', 0.9);
-      const tip = 'Total ' + d.state + ' Imports: $' + d.imports + ' B';
-      tooltip.html(tip)
+      tooltip.html('Total ' + d.state + ' Imports: $' + d.imports + ' B')
         .style('left', event.pageX + 'px')
         .style('top', (event.pageY - 28) + 'px');
     });
 
-  // Update export circles
   svg.selectAll('.export-circle')
     .data(yearData)
     .transition().duration(500)
     .attr('cx', d => xScale(d.exports))
     .attr('cy', d => yScale(d.state));
 
-  // Rebind mouseover with updated data
   svg.selectAll('.export-circle')
     .data(yearData)
     .on('mouseover', function (event, d) {
       tooltip.transition().duration(500).style('opacity', 0.9);
-      const tip = 'Total ' + d.state + ' Exports: $' + d.exports + ' B';
-      tooltip.html(tip)
+      tooltip.html('Total ' + d.state + ' Exports: $' + d.exports + ' B')
         .style('left', event.pageX + 'px')
         .style('top', (event.pageY - 28) + 'px');
     });

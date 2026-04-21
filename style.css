@@ -1,219 +1,254 @@
+html, body {
+    background-color: rgb(10, 6, 18);
+}
 body {
     font-family: 'Lato', sans-serif;
-    font-style:bold;
-    background-image: radial-gradient(rgb(61, 41, 60),black);
-    /* background-color: rgb(22,22,22); */
-}
-
-
-#title {
-    /* background-color: rgb(22,22,22); */
-    width:1800px;
-    height:65px;
-    text-align: left;
-    padding-left:70px;
-    color:rgb(165, 55, 253);
-    border-bottom:rgb(160, 133, 222) dashed 2px;
-    border-top:rgb(160, 133, 222) dashed 2px;
-    margin-bottom:1.5px;
-}
-
-#content {
-    /* background-color:rgb(22,22,22); */
-    width:1870px;
-    height:900px;
-    display:flex;
-    flex-direction: row;
-    padding-bottom:25px;
-    border-bottom: rgb(166, 146, 212) dashed 2px;
-}
-#left {
-    /* background-color:rgb(22,22,22); */
-    flex:12;
-    display:flex;
-    flex-direction: column;
-}
-
-#mapPanel {
-    /* background-color: rgb(26,26,26); */
-    flex:2;
-    display: flex;
-    flex-direction: row;
-    /* border-right:rgb(160, 133, 222) dashed 1.5px; */
-}
-
-#barPanel {
-    /* background-color: rgb(22,22,22); */
-    flex:1;
-    display: flex;
-    flex-direction: row;
-    /* border-top:rgb(160, 133, 222) dashed 1.5px; */
-    /* border-right:rgb(160, 133, 222) dashed 1.5px; */
-}
-/* 
-#middle {
-    background-color:lightpink;
-    flex:2;
-} */
-
-#right {
-    flex:6;
-    display:flex;
-    flex-direction: column;
-    /* padding-right:2px; */
-    padding-left:10px;
-    padding-bottom: 50px;
-    border-left:rgba(160, 133, 222) dotted 2px;
-}
-
-#map {
-flex:7;
-   text-align: center;
-   /* border:thin solid silver; */
-   display:flex;
-   flex-direction:column;
-}
-
-#maptitle{
-    flex:50;
-}
-
-#themap{
-    flex:481;
-    position: relative;
-}
-
-#map-slider{
-    flex:47;
-}
-
-
-#bar {
-    flex:4;
-    /* border:thin dashed silver; */
-    
-}
-
-#barchart {
-    position: absolute;
-
-}
-
-#packLayout-export {
-    /* background-color: rgb(22,22,22); */
-    flex:5;
-    z-index:2;
-}
-
-#packLayout-import {
-    flex:5;
-    /* background-color:rgb(22,22,22); */
-}
-
-#layoutchart-info {
-    flex:4;
-    /* background-color:rgb(22,22,22); */
-}
-
-#exportBarChart {
-    height: 290px;
-    width: 600px;
-    /* background-color: rgb(22,22,22); */
-    align-self: flex-end;
-}
-
-#exportBarChart h2 {
-    font-size: 20px;
-    color:lavender;
-}
-
-#importBarChart {
-    height: 290px;
-    width: 600px;
-    /* background-color: black; */
-    align-self: flex-end;
-}
-
-#importBarChart h2 {
-    font-size: 20px;
+    font-style: bold;
+    background-image: radial-gradient(rgb(61, 41, 60), black);
+    background-attachment: fixed;
+    margin: 0;
+    min-width: 960px;
     color: lavender;
 }
 
+/* ===== Tab navigation ===== */
+.tab-bar {
+    display: flex;
+    gap: 4px;
+    padding: 8px 20px 0;
+    background: rgba(22, 22, 22, 0.8);
+    border-bottom: rgba(160, 133, 222, 0.4) solid 1px;
+    flex-wrap: wrap;
+}
+.tab {
+    background: rgba(77, 48, 139, 0.2);
+    color: lavender;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 18px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.tab:hover {
+    background: rgba(165, 55, 253, 0.25);
+}
+.tab.active {
+    background: rgba(165, 55, 253, 0.35);
+    border-bottom-color: rgb(165, 55, 253);
+    color: white;
+}
+.tab-panel {
+    display: none;
+}
+.tab-panel.active {
+    display: block;
+}
+
+/* ===== Title ===== */
+#title {
+    width: 100%;
+    min-height: 65px;
+    text-align: left;
+    color: rgb(165, 55, 253);
+    border-bottom: rgb(160, 133, 222) dashed 2px;
+    border-top: rgb(160, 133, 222) dashed 2px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 20px;
+}
+#title h1 {
+    font-family: 'Share Tech Mono', monospace;
+    margin: 0 0 0 20px;
+    font-size: clamp(16px, 1.6vw, 28px);
+}
+#show-state {
+    height: 43px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 620px;
+    margin-left: 20px;
+    background-image: linear-gradient(-90deg, rgb(22, 22, 22, 0), rgba(77, 48, 139, 0.8), rgb(22, 22, 22, 0));
+}
+
+/* ===== Content (main dashboard area) ===== */
+#content {
+    width: 100%;
+    height: calc(100vh - 160px);
+    min-height: 720px;
+    display: flex;
+    flex-direction: row;
+    padding: 4px 12px 25px;
+    border-bottom: rgb(166, 146, 212) dashed 2px;
+    box-sizing: border-box;
+    gap: 8px;
+}
+#left {
+    flex: 12;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+#mapPanel {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    min-height: 0;
+    gap: 8px;
+}
+#barPanel {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    min-height: 0;
+    gap: 12px;
+}
+#right {
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    border-left: rgba(160, 133, 222) dotted 2px;
+    min-width: 0;
+}
+#map {
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+}
+#maptitle {
+    flex: 0 0 auto;
+    text-align: left;
+    padding-left: 20px;
+}
+#themap {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+}
+#themap svg:not(.mapLegend) {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+#bar {
+    flex: 4;
+    min-height: 0;
+    min-width: 0;
+    position: relative;
+}
+#bar > svg {
+    width: 100%;
+    height: 100%;
+}
+#exportBarChart,
+#importBarChart {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+#exportBarChart svg,
+#importBarChart svg {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+}
+#exportBarChart h2,
+#importBarChart h2 {
+    font-size: 20px;
+    color: lavender;
+    margin: 0;
+    padding-bottom: 3px;
+}
+#layoutchart-info {
+    flex: 0 0 auto;
+    padding: 6px 0;
+}
+#packLayout-export,
+#packLayout-import {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+#packLayout-export svg,
+#packLayout-import svg {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    min-height: 0;
+}
 #packLayout-export circle {
-    /* fill:#7fc5c9; */
-    /* opacity: 0.2; */
-    stroke:rgba(0,0,0,0);
-    z-index:2;
+    stroke: rgba(0, 0, 0, 0);
+}
+#packLayout-export svg text,
+#packLayout-import svg text {
+    fill: #fff;
+    font-size: 13px;
+    pointer-events: none;
 }
 
-#packLayout-export svg text{
-    z-index:5;
-    fill:#fff;
-    font-size:13px;
+/* ===== Responsive breakpoints ===== */
+@media (max-width: 1280px) {
+    #content {
+        flex-direction: column;
+        height: auto;
+        min-height: unset;
+    }
+    #right {
+        border-left: none;
+        border-top: rgba(160, 133, 222) dotted 2px;
+        padding-left: 0;
+        padding-top: 10px;
+    }
+    #left, #right {
+        min-height: 700px;
+    }
 }
 
-#packLayout-import circle {
-    /* fill:#7fc5c9; */
-    /* opacity: 0.2; */
-    z-index:2;
-}
-
-/* #packLayout-import circle:hover {
-    
-} */
-
-#packLayout-import svg text{
-    z-index:5;
-    fill:#fff;
-    font-size:13px;
-}
-
+/* ===== Map paths ===== */
 path {
     fill: #fff;
     stroke: #fff;
     stroke-width: .5px;
 }
 path:hover {
-    stroke:silver;
-    stroke-width:2px;
+    stroke: silver;
+    stroke-width: 2px;
     fill-opacity: 0.5;
-    
-}
-
-#maptitle {
-    text-align: left;
-    
 }
 .maptitle {
-    font-size:20px;
-    color:white;
+    font-size: 20px;
+    color: white;
     text-align: left;
 }
-
-
-
 .box {
     margin: 0.5px;
-    float: left;
     text-align: center;
 }
 
+/* ===== Bars / axes ===== */
 .chartBar:hover {
     fill: #4d308b;
-    
 }
-
 .xaxis {
     fill: none;
-    
 }
-
 .axis line {
     fill: white;
     stroke: white;
     shape-rendering: crispEdges;
 }
-
 .axis text {
     font-family: sans-serif;
     font-size: 11px;
@@ -221,107 +256,326 @@ path:hover {
     fill: #ffffff;
 }
 
+/* ===== Tooltip ===== */
 .tooltip {
     position: absolute;
-    max-width: 200px;
+    max-width: 260px;
     height: auto;
-    padding: 5px;
+    padding: 5px 8px;
     background-color: white;
+    color: #222;
     border-radius: 5px;
-    box-shadow: 4px 4px 10px rbga(0, 0, 0, 0.5);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
     pointer-events: none;
     font-family: 'Lato', sans-serif;
-    font-style:bold;
-    font-size: 18px;
+    font-size: 14px;
+    z-index: 100;
 }
 
-
+/* ===== Slider ===== */
 .slidecontainer {
-    width: 100%; /* Width of the outside container */
-  }
-  
-  /* The slider itself */
-  .slider {
-    -webkit-appearance: none;  /* Override default CSS styles */
+    width: 100%;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+.slider {
+    -webkit-appearance: none;
     appearance: none;
-    margin-top:-5px;
-    width: 100%; /* Full-width */
-    height: 10px; /* Specified height */
-    background: #d3d3d3; /* Grey background */
-    outline: none; /* Remove outline */
-    opacity: 0.9; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-    transition: opacity .2s;
-  }
-  
-  /* Mouse-over effects */
-  .slider:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-  }
-  
-  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
+    margin-top: -5px;
+    width: 100%;
+    height: 10px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+.slider:hover {
+    opacity: 1;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
     appearance: none;
-    width: 30px; /* Set a specific slider handle width */
-    height: 13px; /* Slider handle height */
-    background: rgb(160, 133, 222); 
-    cursor: pointer; /* Cursor on hover */
-  }
-  
-  .slider::-moz-range-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: rgb(160, 133, 222); 
-    cursor: pointer; /* Cursor on hover */
-  }
-  
-  .commodity-label {
-      color:white;}
+    width: 30px;
+    height: 13px;
+    background: rgb(160, 133, 222);
+    cursor: pointer;
+}
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: rgb(160, 133, 222);
+    cursor: pointer;
+}
 
-  .mapLegend {
-      /* background-color: black; */
-      z-index: 1;
-      position: absolute;
-      right: 0;
-      top: 0;
-  }
+.commodity-label {
+    color: white;
+}
 
-  .legend-label {
-      fill: white;
-      /* font-family: 'Orbitron', 'sans-serif' */
-      /* z-index: -1; */
-  }
-
-  .chartTitle {
-    font-family: 'Economica', sans-serif;
-    font-size: 25px;
-    font-style:bold;
-  }
-
-  .chart-label {
-    /* font-family:'Orbitron', 'sans-serif'; */
-    font-style: 'bold';
-    font-size: '18px';
-    text-shadow: 1.5px 3px black;
-  }
-
-  .axisLabel text {
-    /* font-family: 'sans-serif'; */
+.mapLegend {
+    z-index: 1;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 280px;
+    height: 50px;
+    pointer-events: none;
+}
+.legend-label {
     fill: white;
 }
 
+.chartTitle {
+    font-family: 'Economica', sans-serif;
+    font-size: 25px;
+    font-style: bold;
+}
+.chart-label {
+    font-style: bold;
+    font-size: 18px;
+    text-shadow: 1.5px 3px black;
+}
+.axisLabel text {
+    fill: white;
+}
 .textLabels {
     fill: white;
     font-size: 16px;
-    /* font-family: 'sans-serif' */
+}
+.show-state-name {
+    font-family: 'Orbitron', 'sans-serif';
+    text-shadow: 1.5px 3px black;
+}
+.selected {
+    fill-opacity: 0.5;
 }
 
-  .show-state-name {
-    font-family:'Orbitron', 'sans-serif';
-    text-shadow: 1.5px 3px black;
-  }
+/* ===== Insights section ===== */
+#insights-section {
+    padding: 40px 60px;
+    color: lavender;
+    border-top: rgba(160, 133, 222, 0.6) dashed 2px;
+    background: rgba(22, 22, 22, 0.4);
+}
+#insights-section .section-title {
+    font-family: 'Share Tech Mono', monospace;
+    color: rgb(200, 95, 229);
+    margin: 0 0 16px 0;
+    font-size: 26px;
+}
+#insights-section .section-subtitle {
+    color: rgba(230, 220, 255, 0.75);
+    margin: 0 0 24px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 780px;
+}
+.insights-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+.insights-filters button {
+    background: rgba(77, 48, 139, 0.3);
+    color: lavender;
+    border: 1px solid rgba(165, 55, 253, 0.4);
+    padding: 6px 14px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 14px;
+    transition: background 0.2s;
+}
+.insights-filters button:hover {
+    background: rgba(165, 55, 253, 0.4);
+}
+.insights-filters button.active {
+    background: rgb(165, 55, 253);
+    color: white;
+    border-color: rgb(165, 55, 253);
+}
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+}
+.insight-card {
+    background: rgba(77, 48, 139, 0.25);
+    border-left: 3px solid rgb(165, 55, 253);
+    padding: 18px 18px 16px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.insight-card.hidden {
+    display: none;
+}
+.insight-card .insight-title {
+    font-family: 'Share Tech Mono', monospace;
+    color: white;
+    font-size: 15px;
+    line-height: 1.3;
+    margin: 0;
+}
+.insight-card .insight-headline {
+    color: rgb(200, 95, 229);
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+.insight-card .insight-body {
+    color: rgba(230, 220, 255, 0.85);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+.insight-card .insight-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 6px;
+}
+.insight-tag {
+    display: inline-block;
+    padding: 2px 9px;
+    background: rgba(165, 55, 253, 0.25);
+    border: 1px solid rgba(165, 55, 253, 0.4);
+    border-radius: 10px;
+    font-size: 11px;
+    color: lavender;
+}
+.insight-card .insight-period {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: rgba(200, 95, 229, 0.8);
+    text-transform: uppercase;
+}
 
-  .selected {
-      fill-opacity: 0.5;
-  }
+/* ===== China-Mexico substitution view ===== */
+.sub-view {
+    padding: 20px 32px;
+    color: lavender;
+    box-sizing: border-box;
+}
+.sub-view h2 {
+    font-family: 'Share Tech Mono', monospace;
+    color: rgb(200, 95, 229);
+    margin: 0 0 8px 0;
+    font-size: 22px;
+}
+.sub-view .desc {
+    color: rgba(230, 220, 255, 0.8);
+    font-size: 13px;
+    max-width: 820px;
+    margin: 0 0 20px 0;
+    line-height: 1.5;
+}
+.sub-view .sub-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+    min-height: 420px;
+}
+.sub-view .sub-grid > div {
+    background: rgba(22, 22, 22, 0.4);
+    border: 1px solid rgba(160, 133, 222, 0.3);
+    border-radius: 4px;
+    padding: 14px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+}
+.sub-view .panel-title {
+    font-size: 14px;
+    color: rgb(200, 95, 229);
+    margin: 0 0 10px 0;
+    font-family: 'Share Tech Mono', monospace;
+}
+.sub-view .sub-map, .sub-view .sub-bars, .sub-view .sub-trend {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+}
+.sub-view .sub-trend-row {
+    margin-top: 24px;
+    background: rgba(22, 22, 22, 0.4);
+    border: 1px solid rgba(160, 133, 222, 0.3);
+    border-radius: 4px;
+    padding: 14px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+.sub-view svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+@media (max-width: 1100px) {
+    .sub-view .sub-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Heatmap view ===== */
+.heatmap-view {
+    padding: 20px 32px;
+    color: lavender;
+}
+.heatmap-view h2 {
+    font-family: 'Share Tech Mono', monospace;
+    color: rgb(200, 95, 229);
+    margin: 0 0 8px 0;
+    font-size: 22px;
+}
+.heatmap-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    padding: 10px 0;
+}
+.heatmap-controls label {
+    font-size: 13px;
+    color: lavender;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.heatmap-controls select {
+    background: rgba(77, 48, 139, 0.4);
+    color: white;
+    border: 1px solid rgba(165, 55, 253, 0.5);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+}
+.heatmap-scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: calc(100vh - 260px);
+    background: rgba(22, 22, 22, 0.5);
+    border: 1px solid rgba(160, 133, 222, 0.3);
+    border-radius: 4px;
+}
+.heatmap-scroll svg {
+    display: block;
+}
+.heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: rgba(230, 220, 255, 0.75);
+    margin-top: 10px;
+}
+.heatmap-legend .legend-bar {
+    width: 220px;
+    height: 12px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #b2182b, #ef8a62, #fddbc7, #f7f7f7, #d1e5f0, #67a9cf, #2166ac);
+}

@@ -2,11 +2,17 @@ import * as d3 from 'd3';
 import { state } from './state.js';
 import { switchColor } from './colors.js';
 
+const SIZE = 410;
+
 let allData;
 let packImpTooltip;
 
 export function initImportPack(data) {
   allData = data;
+
+  d3.select('#packLayout-import svg')
+    .attr('viewBox', `0 0 ${SIZE} ${SIZE}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
 
   packImpTooltip = d3.select('#packLayout-import')
     .append('div')
@@ -18,7 +24,7 @@ export function initImportPack(data) {
 }
 
 function filterData(stateName, time) {
-  const filters = { state: stateName || 'Texas', time: time || '2018' };
+  const filters = { state: stateName || 'Texas', time: time || '2025' };
   return allData.filter(function (row) {
     return ['commodity', 'state', 'time', 'country', 'total_import_values'].reduce(function (pass, column) {
       return pass && (!filters[column] || row[column] === filters[column]);
@@ -30,9 +36,8 @@ function renderPack(dataset) {
   const importValue = dataset.map(el => el.total_import_values);
   const biggest = importValue.slice().sort((a, b) => b - a).slice(0, state.numberOfLabels);
 
-  const s = 410;
   const max = d3.max(importValue);
-  const linearscale = d3.scaleLinear().domain([0, max]).range([0, s]);
+  const linearscale = d3.scaleLinear().domain([0, max]).range([0, SIZE]);
 
   const data = {
     name: 'Total',
@@ -44,7 +49,7 @@ function renderPack(dataset) {
     })),
   };
 
-  const packLayout = d3.pack().size([s, s]);
+  const packLayout = d3.pack().size([SIZE, SIZE]);
   const rootNode = d3.hierarchy(data).sum(d => d.value);
   packLayout(rootNode);
 
@@ -95,9 +100,8 @@ export function updateImportPack() {
   const importValue = dataset.map(el => el.total_import_values);
   const biggest = importValue.slice().sort((a, b) => b - a).slice(0, state.numberOfLabels);
 
-  const s = 410;
   const max = d3.max(importValue);
-  const linearscale = d3.scaleLinear().domain([0, max]).range([0, s]);
+  const linearscale = d3.scaleLinear().domain([0, max]).range([0, SIZE]);
 
   const data = {
     name: 'Total',
@@ -109,7 +113,7 @@ export function updateImportPack() {
     })),
   };
 
-  const packLayout = d3.pack().size([s, s]);
+  const packLayout = d3.pack().size([SIZE, SIZE]);
   const t = d3.transition().duration(1000);
   const t2 = d3.transition().duration(2000);
   const rootNode = d3.hierarchy(data).sum(d => d.value);
@@ -125,6 +129,19 @@ export function updateImportPack() {
   const textNumber = d3.select('#packLayout-import svg g')
     .selectAll('.packlayout-import-label-number')
     .data(packLayout(rootNode).descendants());
+
+  nodes.on('mouseover', function (event, d) {
+    const textCategory = d.data.name.slice(3).trim();
+    const textValue = Math.round(d.data.importValue / 10000000);
+    if (d.data.name !== 'Total') {
+      packImpTooltip.transition().duration(500).style('opacity', 0.9);
+    }
+    if (textValue) {
+      packImpTooltip.html(textCategory + ', $' + textValue / 100 + ' B')
+        .style('left', event.pageX + 'px')
+        .style('top', event.pageY + 'px');
+    }
+  });
 
   nodes.transition(t)
     .style('fill', d => switchColor(d.data.name))
